@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  db:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescaledb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=monitoring_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - timescaledb-data:/var/lib/postgresql/data
+
+volumes:
+  timescaledb-data:
