@@ -17,3 +17,17 @@ pip install -r dashboard/requirements.txt
 
 # Run the Streamlit dashboard
 python -m streamlit run dashboard/dashboard.py
+
+ 
+to stop the docker:docker-compose down -v
+
+
+
+
+
+
+
+
+
+
+//to see the tables everything run this command in you terminal:----  docker exec -it timescaledb psql -U admin -d monitoring_db
