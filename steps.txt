@@ -18,6 +18,9 @@ pip install -r dashboard/requirements.txt
 # Run the Streamlit dashboard
 python -m streamlit run dashboard/dashboard.py
 
+
+.\start.ps1
+
  
 to stop the docker:docker-compose down -v
 

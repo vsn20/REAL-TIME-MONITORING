@@ -12,18 +12,25 @@ body {
 }
 
 .dashboard-layout { display: flex; height: 100vh; }
+
 .sidebar {
-    width: 240px; background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color); display: flex;
-    flex-direction: column; padding: 0 20px;
+    width: 280px; /* Include padding in width */
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px; /* Padding inside the sidebar */
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     z-index: 1000;
+    box-sizing: border-box; /* Ensure padding doesn't add to width */
+    overflow-y: auto; /* Allow sidebar scrolling if content overflows */
 }
 .sidebar-header { padding: 20px 0; border-bottom: 1px solid var(--border-color); }
 .sidebar h2 { margin: 0; font-size: 1.2em; color: var(--accent-color); }
+
 .device-group { margin-top: 20px; }
 .device-group h3 {
     font-size: 0.9em; color: var(--secondary-text);
@@ -32,12 +39,49 @@ body {
 .device-group select {
     width: 100%; padding: 10px; border-radius: 5px;
     border: 1px solid var(--border-color); background-color: #fff; font-size: 1em;
+    box-sizing: border-box;
 }
 
+/* Time Range Picker Styles */
+.time-range-picker {
+    margin-top: 20px;
+    padding-top: 20px;
+    /* border-top: 1px solid var(--border-color); */ /* Line removed */
+}
+.time-range-picker div {
+    margin-bottom: 10px;
+}
+.time-range-picker label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 4px;
+    color: var(--secondary-text);
+}
+.time-range-picker input[type="datetime-local"] {
+    width: 100%; /* Take full width within padding */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    font-size: 0.9em;
+    box-sizing: border-box;
+}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Main Header */
 .main-header {
     display: flex; justify-content: space-between; align-items: center;
-    background-color: var(--header-bg); padding: 20px 30px;
-    border-bottom: 1px solid var(--border-color); position: fixed; top: 0; left: 280px; right: 0; z-index: 999;
+    background-color: var(--header-bg); padding: 0 30px; /* Adjusted padding */
+    border-bottom: 1px solid var(--border-color); position: fixed;
+    top: 0; left: 280px; /* Start after sidebar */
+    right: 0; z-index: 999;
+    height: 60px; /* Explicit height */
+    box-sizing: border-box;
 }
 .main-header h1 { margin: 0; font-size: 1.8em; }
 .main-header button {
@@ -48,11 +92,23 @@ body {
 .main-header button:hover { background-color: #357abd; }
 .main-header button:disabled { background-color: #a0c3e8; cursor: not-allowed; }
 
-.main-content { margin-left: 280px; margin-top: 60px; padding: 0 30px 30px; overflow-y: auto; height: calc(100vh - 60px); }
+/* Main Content Area */
+.main-content {
+    margin-left: 280px; /* Same as sidebar width */
+    padding-top: 80px; /* Header height + space */
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
 
 .data-section { margin-top: 30px; }
+.data-section:first-child { margin-top: 0; }
 .data-section h3 { font-size: 1.3em; margin-bottom: 15px; }
 
+/* Metrics Grid */
 .metrics-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;
 }
@@ -63,25 +119,37 @@ body {
 .metric-card h4 {
     margin: 0 0 10px 0; text-transform: capitalize;
     color: var(--secondary-text); font-size: 1em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .metric-card p { margin: 0; font-size: 2em; font-weight: 600; }
 
+/* Chart Container */
 .chart-container {
     height: 400px; background-color: var(--card-bg);
     padding: 20px; border-radius: 8px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
+/* Table Container */
 .table-container {
     max-height: 400px; overflow-y: auto; background-color: var(--card-bg);
     border-radius: 8px; border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 .table-container table { width: 100%; border-collapse: collapse; }
 .table-container th, .table-container td {
     padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
 }
-.table-container th { background-color: #f9fafb; position: sticky; top: 0; z-index: 2; }
-.table-container td:first-child, .table-container td:nth-child(2) { text-transform: capitalize; }
+.table-container th {
+    background-color: #f9fafb; position: sticky; top: 0; z-index: 2;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.table-container tr:last-child td { border-bottom: none; }
+.table-container td:first-child { text-transform: capitalize; }
+.table-container td:nth-child(2) { text-transform: capitalize; }
 
 
 .severity-error { color: var(--danger-color); font-weight: bold; }
@@ -90,6 +158,11 @@ body {
 .loading-text {
     color: var(--secondary-text);
     text-align: center;
-    padding-top: 50px;
+    padding: 50px 20px;
     font-size: 1.2em;
+}
+
+/* Ensure paragraph text within sections also uses primary text color */
+.data-section p {
+    color: var(--primary-text);
 }
